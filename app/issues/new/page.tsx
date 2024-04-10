@@ -24,38 +24,37 @@ const NewIssuePage = () => {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
 
+    const onSubmit = handleSubmit(async (data) => {
+        try {
+            setLoading(true)
+            await axios.post("/api/issues", data)
+            router.push('/issues')
+        } catch (error) {
+            setError("An error has occurred")
+            setLoading(false)
+        }
+    })
+
     return (
-        <div>
-            <form className='max-w-xl space-y-3' onSubmit={handleSubmit(async (data) => {
-                try {
-                    setLoading(true)
-                    await axios.post("/api/issues", data)
-                    router.push('/issues')
-                } catch (error) {
-                    setError("An error has occurred")
-                    setLoading(false)
-                }
-            }
-            )}>
-                <Text weight="medium">Create New Issue</Text>
-                <TextField.Root>
-                    <TextField.Input placeholder='Title' {...register('title')} />
-                </TextField.Root>
-                <ErrorMessage>{errors.title?.message}</ErrorMessage>
-                <Controller name="description" control={control} render={({ field }) =>
-                    <SimpleMDE placeholder='Description' {...field} />
-                }>
-                </Controller>
-                <ErrorMessage>{errors.description?.message}</ErrorMessage>
-                <Button disabled={loading}>Submit New Issue{loading && <LoadingSpinner />}</Button>
-                {error && (
-                    <Callout.Root color="red">
-                        <Callout.Text>
-                            {error}
-                        </Callout.Text>
-                    </Callout.Root>)}
-            </form>
-        </div>
+        <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
+            <Text weight="medium">Create New Issue</Text>
+            <TextField.Root>
+                <TextField.Input placeholder='Title' {...register('title')} />
+            </TextField.Root>
+            <ErrorMessage>{errors.title?.message}</ErrorMessage>
+            <Controller name="description" control={control} render={({ field }) =>
+                <SimpleMDE placeholder='Description' {...field} />
+            }>
+            </Controller>
+            <ErrorMessage>{errors.description?.message}</ErrorMessage>
+            <Button disabled={loading}>Submit New Issue{loading && <LoadingSpinner />}</Button>
+            {error && (
+                <Callout.Root color="red">
+                    <Callout.Text>
+                        {error}
+                    </Callout.Text>
+                </Callout.Root>)}
+        </form>
     )
 }
 
