@@ -3,6 +3,9 @@ import prisma from '@/prisma/client'
 import { Card, Flex, Heading, Text } from '@radix-ui/themes'
 import { notFound } from 'next/navigation'
 import ReactMarkdown from 'react-markdown'
+import { IoIosArrowBack } from "react-icons/io";
+import Link from 'next/link'
+
 
 interface Props {
     params: { id: string }
@@ -16,7 +19,8 @@ const IssueDetails = async ({ params }: Props) => {
     if (!issue) notFound()
 
     return (
-        <div>
+        <div className='space-y-3'>
+            <Link href='/issues'><IoIosArrowBack /></Link>
             <Heading>{issue.title}</Heading>
             <Flex gap="3" my="3">
                 <StatusBadge status={issue.status} />
