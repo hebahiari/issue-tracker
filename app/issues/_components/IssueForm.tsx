@@ -2,7 +2,7 @@
 
 import ErrorMessage from '@/app/components/ErrorMessage';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
-import { createIssueSchema } from '@/app/validationSchemas';
+import { issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { Button, Callout, Heading, TextField } from '@radix-ui/themes';
@@ -21,13 +21,13 @@ const SimpleMDE = dynamic(
     { ssr: false }
 )
 
-type IssueFormData = z.infer<typeof createIssueSchema>
+type IssueFormData = z.infer<typeof issueSchema>
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
 
     const router = useRouter()
     const { register, control, handleSubmit, formState: { errors } } = useForm<IssueFormData>({
-        resolver: zodResolver(createIssueSchema)
+        resolver: zodResolver(issueSchema)
     })
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -46,7 +46,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     return (
         <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
             <Link href='/issues'><IoIosArrowBack /></Link>
-            <Heading weight="medium">Create New Issue</Heading>
+            <Heading weight="medium">{issue ? 'Edit Issue' : 'Create New Issue'}</Heading>
             <TextField.Root>
                 <TextField.Input defaultValue={issue?.title} placeholder='Title' {...register('title')} />
             </TextField.Root>
@@ -60,7 +60,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 }>
             </Controller>
             <ErrorMessage>{errors.description?.message}</ErrorMessage>
-            <Button disabled={loading}>Submit New Issue{loading && <LoadingSpinner />}</Button>
+            <Button disabled={loading}>{issue ? 'Submit Changes' : 'Submit New Issue'}{loading && <LoadingSpinner />}</Button>
             {error && (
                 <Callout.Root color="red">
                     <Callout.Text>
