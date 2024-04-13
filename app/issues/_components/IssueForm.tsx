@@ -35,8 +35,14 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     const onSubmit = handleSubmit(async (data) => {
         try {
             setLoading(true)
-            await axios.post("/api/issues", data)
-            router.push('/issues')
+            if (issue) {
+                await axios.patch(`/api/issues/${issue.id}`, data)
+                router.push(`/issues/${issue.id}`)
+            } else {
+                await axios.post("/api/issues", data)
+                router.push('/issues')
+            }
+
         } catch (error) {
             setError("An error has occurred")
             setLoading(false)
@@ -60,7 +66,10 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 }>
             </Controller>
             <ErrorMessage>{errors.description?.message}</ErrorMessage>
-            <Button disabled={loading}>{issue ? 'Submit Changes' : 'Submit New Issue'}{loading && <LoadingSpinner />}</Button>
+            <Button disabled={loading}>
+                {issue ? 'Update Issue' : 'Submit New Issue'}
+                {loading && <LoadingSpinner />}
+            </Button>
             {error && (
                 <Callout.Root color="red">
                     <Callout.Text>
