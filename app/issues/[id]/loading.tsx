@@ -1,9 +1,8 @@
-import StatusBadge from '@/app/components/StatusBadge'
-import { Heading, Flex, Card, Box, Text } from '@radix-ui/themes'
+import { Skeleton } from '@/app/components'
+import { Box, Card, Flex, Heading, Text } from '@radix-ui/themes'
 import Link from 'next/link'
 import { IoIosArrowBack } from 'react-icons/io'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+
 
 const LoadingIssue = () => {
     return (
