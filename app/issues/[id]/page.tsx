@@ -1,10 +1,11 @@
 import StatusBadge from '@/app/components/StatusBadge'
 import prisma from '@/prisma/client'
 import { Card, Flex, Heading, Text } from '@radix-ui/themes'
-import { notFound } from 'next/navigation'
-import ReactMarkdown from 'react-markdown'
-import { IoIosArrowBack } from "react-icons/io";
+import delay from 'delay'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { IoIosArrowBack } from "react-icons/io"
+import ReactMarkdown from 'react-markdown'
 
 
 interface Props {
@@ -17,6 +18,8 @@ const IssueDetails = async ({ params }: Props) => {
     })
 
     if (!issue) notFound()
+
+    delay(2000)
 
     return (
         <div className='space-y-3'>

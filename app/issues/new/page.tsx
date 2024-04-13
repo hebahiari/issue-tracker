@@ -12,6 +12,8 @@ import { createIssueSchema } from '@/app/validationSchemas';
 import { z } from 'zod'
 import ErrorMessage from '@/app/components/ErrorMessage';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
+import Link from 'next/link';
+import { IoIosArrowBack } from 'react-icons/io';
 
 type IssueForm = z.infer<typeof createIssueSchema>
 
@@ -37,6 +39,7 @@ const NewIssuePage = () => {
 
     return (
         <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
+            <Link href='/issues'><IoIosArrowBack /></Link>
             <Heading weight="medium">Create New Issue</Heading>
             <TextField.Root>
                 <TextField.Input placeholder='Title' {...register('title')} />
