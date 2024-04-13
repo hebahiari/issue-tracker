@@ -15,11 +15,7 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { IoIosArrowBack } from 'react-icons/io';
 import { z } from 'zod';
-
-const SimpleMDE = dynamic(
-    () => import('react-simplemde-editor'),
-    { ssr: false }
-)
+import SimpleMDE from 'react-simplemde-editor'
 
 type IssueFormData = z.infer<typeof issueSchema>
 

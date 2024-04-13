@@ -1,14 +1,3 @@
-import { Skeleton } from '@/app/components'
-import { Box } from '@radix-ui/themes'
+import IssueFormLoading from "../_components/issueFormLoading";
 
-
-const LoadingCreateIssue = () => {
-    return (
-        <Box max-width='xl'>
-            <Skeleton />
-            <Skeleton height='20rem' />
-        </Box>
-    )
-}
-
-export default LoadingCreateIssue
+export default IssueFormLoading

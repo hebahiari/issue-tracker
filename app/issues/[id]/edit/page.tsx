@@ -1,11 +1,22 @@
 import React from 'react'
-import IssueForm from '../../_components/IssueForm'
 import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
+import dynamic from 'next/dynamic'
+import IssueFormLoading from './loading'
 
 interface Props {
     params: { id: string }
 }
+
+// forcing issue form to render dynamically to properly
+// display the MDE
+const IssueForm = dynamic(
+    () => import('@/app/issues/_components/IssueForm'),
+    {
+        'ssr': false,
+        loading: () => <IssueFormLoading />
+    }
+)
 
 const EditIssuePage = async ({ params }: Props) => {
 
