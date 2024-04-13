@@ -38,4 +38,9 @@ const IssuesPage = async () => {
     )
 }
 
+// to rerender the issues page to show new/updated issues:
+export const dynamic = 'force-dynamic'
+// OR
+// export const revalidate = 0
+
 export default IssuesPage

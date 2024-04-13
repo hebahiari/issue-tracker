@@ -38,11 +38,13 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
             if (issue) {
                 await axios.patch(`/api/issues/${issue.id}`, data)
                 router.push(`/issues/${issue.id}`)
+                router.refresh()
             } else {
                 await axios.post("/api/issues", data)
                 router.push('/issues')
+                // refreshing to update the issues in the cache
+                router.refresh()
             }
-
         } catch (error) {
             setError("An error has occurred")
             setLoading(false)
