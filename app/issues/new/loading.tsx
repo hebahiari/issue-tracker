@@ -1,3 +1,3 @@
-import IssueFormLoading from "../_components/issueFormLoading";
+import IssueFormLoading from "../_components/IssueFormLoading";
 
 export default IssueFormLoading
