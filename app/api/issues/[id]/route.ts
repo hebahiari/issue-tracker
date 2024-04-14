@@ -35,3 +35,24 @@ export async function PATCH(
         return NextResponse.json(validation.error.format(), { status: 400 })
     }
 }
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: { id: string } }) {
+
+    const issue = await prisma.issue.findUnique({
+        where: { id: parseInt(params.id) }
+    })
+
+    if (issue) {
+        await prisma.issue.delete({
+            where: { id: parseInt(params.id) }
+        })
+
+        return NextResponse.json({})
+
+    } else {
+        return NextResponse.json({ error: "Invalid Issue" }, { status: 400 })
+    }
+
+}
