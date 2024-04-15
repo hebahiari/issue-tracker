@@ -2,7 +2,7 @@
 
 import { LoadingSpinner } from '@/app/components'
 import { TrashIcon } from '@radix-ui/react-icons'
-import { AlertDialog, Button, Flex } from '@radix-ui/themes'
+import { AlertDialog, Box, Button, Flex } from '@radix-ui/themes'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -30,9 +30,11 @@ const DeleteButton = ({ issueId }: { issueId: number }) => {
         <>
             <AlertDialog.Root>
                 <AlertDialog.Trigger>
-                    <Button color='red' disabled={loading}>
-                        {loading && <LoadingSpinner />}<TrashIcon />Delete Issue
-                    </Button>
+                    <Box>
+                        <Button color='red' disabled={loading}>
+                            {loading && <LoadingSpinner />}<TrashIcon />Delete Issue
+                        </Button>
+                    </Box>
                 </AlertDialog.Trigger>
                 <AlertDialog.Content >
                     <AlertDialog.Title>Delete Issue</AlertDialog.Title>
