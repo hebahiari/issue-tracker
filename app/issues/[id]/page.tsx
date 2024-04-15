@@ -7,6 +7,8 @@ import { IoIosArrowBack } from "react-icons/io"
 import EditButton from './EditButton'
 import IssueDetails from './IssueDetails'
 import DeleteButton from './DeleteButton'
+import { getServerSession } from 'next-auth'
+import AuthOptions from '@/app/auth/AuthOptions'
 
 
 interface Props {
@@ -14,6 +16,9 @@ interface Props {
 }
 
 const IssueDetailsPage = async ({ params }: Props) => {
+
+    const session = await getServerSession(AuthOptions)
+
     const issue = await prisma.issue.findUnique({
         where: { id: parseInt(params.id) }
     })
@@ -28,12 +33,14 @@ const IssueDetailsPage = async ({ params }: Props) => {
                 <Link href='/issues'><IoIosArrowBack /></Link>
                 <IssueDetails issue={issue} />
             </Box>
-            <Box>
-                <Flex gap='4'  >
-                    <EditButton issueId={issue.id} />
-                    <DeleteButton issueId={issue.id} />
-                </Flex>
-            </Box>
+            {session && (
+                <Box>
+                    <Flex gap='4'  >
+                        <EditButton issueId={issue.id} />
+                        <DeleteButton issueId={issue.id} />
+                    </Flex>
+                </Box>
+            )}
         </Grid>
     )
 }

@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React from 'react'
 import { GrBug } from "react-icons/gr"
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
