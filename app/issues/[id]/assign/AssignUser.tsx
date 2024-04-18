@@ -17,7 +17,7 @@ const AssignUser = ({ issue }: { issue: Issue }) => {
 
     const assignIssue = async (userId: User['id']) => {
         await axios.patch(
-            `/xapi/issues/${issue.id}`,
+            `/api/issues/${issue.id}`,
             { assignedToUserId: userId || null }
         )
             .catch(() => { toast.error("Changes could not be saved.") })
