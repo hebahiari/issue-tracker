@@ -32,21 +32,19 @@ const IssueDetailsPage = async ({ params }: Props) => {
     delay(2000)
 
     return (
-        <Grid className='space-y-3'>
-            <Box>
-                <Link href='/issues'><IoIosArrowBack /></Link>
-                <IssueDetails issue={issue} />
-            </Box>
+        <Flex direction='column' gap='4'>
+            <Link href='/issues'><IoIosArrowBack size='20' style={{ color: 'var(--sand-10)' }} /></Link>
+            <IssueDetails issue={issue} />
             {session && (
                 <Box>
-                    <Flex gap='4'  >
+                    <Flex gap='4' direction={{ 'initial': 'column', md: 'row' }} >
                         <AssignUser issue={issue} />
                         <EditButton issueId={issue.id} />
                         <DeleteButton issueId={issue.id} />
                     </Flex>
                 </Box>
             )}
-        </Grid>
+        </Flex>
     )
 }
 

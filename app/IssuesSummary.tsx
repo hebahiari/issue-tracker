@@ -6,11 +6,13 @@ interface Props {
     open: number;
     closed: number;
     inProgress: number;
+    total: number;
 }
 
-const IssuesSummary = ({ open, inProgress, closed }: Props) => {
+const IssuesSummary = ({ open, inProgress, closed, total }: Props) => {
 
-    const types: { label: string, value: number, status: Status }[] = [
+    const types: { label: string, value: number, status?: Status }[] = [
+        { label: 'All Issues', value: total },
         { label: 'Open Issues', value: open, status: 'OPEN' },
         { label: 'In Progress Issues', value: inProgress, status: 'IN_PROGRESS' },
         { label: 'Closed Issues', value: closed, status: 'CLOSED' },
@@ -23,7 +25,7 @@ const IssuesSummary = ({ open, inProgress, closed }: Props) => {
                     <Flex direction='column' gap='1'>
                         <Link
                             className='text-sm font-medium'
-                            href={`/issues?status=${type.status}`}>{type.label}</Link>
+                            href={type.status ? `/issues?status=${type.status}` : '/issues'}>{type.label}</Link>
                         <Text size='3' className='font-bold'>{type.value}</Text>
                     </Flex>
                 </Card>

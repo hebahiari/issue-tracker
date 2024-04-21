@@ -7,14 +7,16 @@ interface Props {
     open: number;
     closed: number;
     inProgress: number;
+    total: number;
 }
 
-const IssuesChart = ({ open, inProgress, closed }: Props) => {
+const IssuesChart = ({ open, inProgress, closed, total }: Props) => {
 
     const data = [
+        { label: 'All Issues', value: total },
         { label: 'Open Issues', value: open },
         { label: 'In Progress Issues', value: inProgress },
-        { label: 'Closed Issues', value: closed }
+        { label: 'Closed Issues', value: closed },
     ]
 
     return (

@@ -6,8 +6,8 @@ import { IoIosArrowBack } from 'react-icons/io'
 
 const LoadingIssue = () => {
     return (
-        <Box max-width='xl'>
-            <Link href='/issues'><IoIosArrowBack /></Link>
+        <Flex direction='column' gap='4'>
+            <Link href='/issues'><IoIosArrowBack size='20' style={{ color: 'var(--sand-10)' }} /></Link>
             <Heading><Skeleton /></Heading>
             <Flex gap="3" my="3">
                 <Skeleton width='5rem' />
@@ -16,7 +16,7 @@ const LoadingIssue = () => {
             <Card>
                 <Skeleton count={3} />
             </Card>
-        </Box>
+        </Flex>
     )
 }
 
