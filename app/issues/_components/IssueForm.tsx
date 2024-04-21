@@ -16,6 +16,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { IoIosArrowBack } from 'react-icons/io';
 import { z } from 'zod';
 import SimpleMDE from 'react-simplemde-editor'
+import BackButton from './BackButton';
 
 type IssueFormData = z.infer<typeof issueSchema>
 
@@ -49,7 +50,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 
     return (
         <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
-            <Link href='/issues'><IoIosArrowBack /></Link>
+            <BackButton />
             <Heading weight="medium">{issue ? 'Edit Issue' : 'Create New Issue'}</Heading>
             <TextField.Root>
                 <TextField.Input defaultValue={issue?.title} placeholder='Title' {...register('title')} />

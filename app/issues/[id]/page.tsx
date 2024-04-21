@@ -11,6 +11,7 @@ import { getServerSession } from 'next-auth'
 import AuthOptions from '@/app/auth/AuthOptions'
 import AssignUser from './assign/AssignUser'
 import { cache } from 'react'
+import BackButton from '../_components/BackButton'
 
 
 interface Props {
@@ -33,7 +34,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
     return (
         <Flex direction='column' gap='4'>
-            <Link href='/issues'><IoIosArrowBack size='20' style={{ color: 'var(--sand-10)' }} /></Link>
+            <BackButton />
             <IssueDetails issue={issue} />
             {session && (
                 <Box>
