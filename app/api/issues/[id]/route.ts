@@ -1,8 +1,6 @@
 import AuthOptions from "@/app/auth/AuthOptions";
 import { issueSchema, patchIssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
-import { error } from "console";
-import delay from "delay";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -11,8 +9,8 @@ export async function PATCH(
     { params }: { params: { id: string } }) {
 
     // respond with not authorized if user is not logged in
-    // const session = await getServerSession(AuthOptions)
-    // if (!session) return NextResponse.json({}, { status: 401 })
+    const session = await getServerSession(AuthOptions)
+    if (!session) return NextResponse.json({}, { status: 401 })
 
     const body = await request.json()
     const validation = patchIssueSchema.safeParse(body)

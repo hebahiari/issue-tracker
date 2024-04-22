@@ -11,7 +11,7 @@ import { useState } from 'react'
 const DeleteButton = ({ issueId }: { issueId: number }) => {
 
     const router = useRouter()
-    const [error, setError] = useState(false)
+    const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
 
     const deleteIssue = async () => {
@@ -20,9 +20,13 @@ const DeleteButton = ({ issueId }: { issueId: number }) => {
             await axios.delete(`/api/issues/${issueId}`)
             router.push('/issues')
             router.refresh()
-        } catch (error) {
+        } catch (error: any) {
+            if (error?.response?.status === 401) {
+                setError("Please log in to perform this action")
+            } else {
+                setError("This issue cannot be deleted")
+            }
             setLoading(false)
-            setError(true)
         }
     }
 
@@ -55,13 +59,13 @@ const DeleteButton = ({ issueId }: { issueId: number }) => {
                     </Flex>
                 </AlertDialog.Content>
             </AlertDialog.Root>
-            <AlertDialog.Root open={error}>
+            <AlertDialog.Root open={error !== ""}>
                 <AlertDialog.Content>
                     <AlertDialog.Title>Error</AlertDialog.Title>
                     <AlertDialog.Description>
-                        This issue cannot be deleted.
+                        {error}
                         <Flex gap="3" mt="4" justify="end">
-                            <Button variant="soft" color="gray" onClick={() => setError(false)}>
+                            <Button variant="soft" color="gray" onClick={() => setError("")}>
                                 OK
                             </Button>
                         </Flex>

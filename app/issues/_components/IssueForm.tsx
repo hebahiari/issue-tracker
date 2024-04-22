@@ -6,7 +6,7 @@ import { issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { Button, Callout, Heading, TextField } from '@radix-ui/themes';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import "easymde/dist/easymde.min.css";
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -42,8 +42,12 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 // refreshing to update the issues in the cache
                 router.refresh()
             }
-        } catch (error) {
-            setError("An error has occurred")
+        } catch (error: any) {
+            if (error?.response?.status === 401) {
+                setError("Please log in to perform this action")
+            } else {
+                setError("An error has occurred")
+            }
             setLoading(false)
         }
     })

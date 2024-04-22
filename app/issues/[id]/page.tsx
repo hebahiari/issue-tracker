@@ -1,9 +1,7 @@
 import prisma from '@/prisma/client'
 import { Box, Flex, Grid } from '@radix-ui/themes'
 import delay from 'delay'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { IoIosArrowBack } from "react-icons/io"
 import EditButton from './EditButton'
 import IssueDetails from './IssueDetails'
 import DeleteButton from './DeleteButton'
@@ -36,9 +34,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
         <Flex direction='column' gap='4'>
             <BackButton />
             <IssueDetails issue={issue} />
-            {session && (
+            {(
                 <Box>
-                    <Flex gap='4' direction={{ 'initial': 'column', md: 'row' }} >
+                    <Flex gap='4' direction={{ 'initial': 'column', sm: 'row' }} >
                         <AssignUser issue={issue} />
                         <EditButton issueId={issue.id} />
                         <DeleteButton issueId={issue.id} />
