@@ -10,3 +10,8 @@ export const patchIssueSchema = z.object({
     description: z.string().min(1, "Description is required").max(65000).optional(),
     assignedToUserId: z.string().min(1, "AssignedToUserId is required.").max(225).optional().nullable()
 });
+
+export const commentSchema = z.object({
+    description: z.string().min(1, "Description is required").max(65000),
+    assignedToUserId: z.string().min(1, "AssignedToUserId is required.").max(225)
+});
