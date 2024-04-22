@@ -3,7 +3,7 @@ import { IoIosArrowBack } from 'react-icons/io'
 
 const BackButton = () => {
     return (
-        <Link href='/issues'><IoIosArrowBack size='20' style={{ color: 'var(--sand-10)' }} /></Link>
+        <Link href='/issues/list'><IoIosArrowBack size='20' style={{ color: 'var(--sand-10)' }} /></Link>
     )
 }
 

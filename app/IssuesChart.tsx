@@ -15,7 +15,7 @@ const IssuesChart = ({ open, inProgress, closed, total }: Props) => {
     const data = [
         { label: 'All Issues', value: total },
         { label: 'Open Issues', value: open },
-        { label: 'In Progress Issues', value: inProgress },
+        { label: 'In Progress', value: inProgress },
         { label: 'Closed Issues', value: closed },
     ]
 

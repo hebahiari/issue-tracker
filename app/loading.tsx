@@ -9,7 +9,7 @@ const types: { label: string, status?: Status }[] = [
     { label: 'Closed Issues', status: 'CLOSED' },
 ]
 
-const recentIssues = [1, 2, 3, 4]
+const recentIssues = [1, 2, 3, 4, 5]
 
 const DashboardLoadingPage = () => {
     return (

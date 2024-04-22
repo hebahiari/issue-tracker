@@ -5,8 +5,6 @@ import { notFound } from 'next/navigation'
 import EditButton from './EditButton'
 import IssueDetails from './IssueDetails'
 import DeleteButton from './DeleteButton'
-import { getServerSession } from 'next-auth'
-import AuthOptions from '@/app/auth/AuthOptions'
 import AssignUser from './assign/AssignUser'
 import { cache } from 'react'
 import BackButton from '../_components/BackButton'
@@ -21,8 +19,6 @@ const fetchUser = cache((issueId: number) => prisma.issue.findUnique({
 }))
 
 const IssueDetailsPage = async ({ params }: Props) => {
-
-    const session = await getServerSession(AuthOptions)
 
     const issue = await fetchUser(parseInt(params.id))
 

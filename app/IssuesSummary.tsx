@@ -25,7 +25,7 @@ const IssuesSummary = ({ open, inProgress, closed, total }: Props) => {
                     <Flex direction='column' gap='1'>
                         <Link
                             className='text-sm font-medium'
-                            href={type.status ? `/issues?status=${type.status}` : '/issues'}>{type.label}</Link>
+                            href={type.status ? `/issues/list?status=${type.status}` : '/issues/list'}>{type.label}</Link>
                         <Text size='3' className='font-bold'>{type.value}</Text>
                     </Flex>
                 </Card>
