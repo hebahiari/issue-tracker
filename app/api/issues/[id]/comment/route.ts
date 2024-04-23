@@ -16,13 +16,14 @@ export async function POST(request: NextRequest) {
     const validation = commentSchema.safeParse(body)
 
     if (validation.success) {
-        const { assignedToUserId, type, description } = body
+        const { assignedToUserId, type, description, relatedIssue } = body
 
         const newComment = await prisma.comment.create({
             data: {
                 assignedToUserId,
                 description,
-                type
+                type,
+                relatedIssue: parseInt(relatedIssue)
             }
         })
         return NextResponse.json(newComment, { status: 201 })

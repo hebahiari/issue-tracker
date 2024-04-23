@@ -6,14 +6,11 @@ import { issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { Button, Callout, Heading, TextField } from '@radix-ui/themes';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import "easymde/dist/easymde.min.css";
-import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { IoIosArrowBack } from 'react-icons/io';
 import { z } from 'zod';
 import SimpleMDE from 'react-simplemde-editor'
 import BackButton from './BackButton';
