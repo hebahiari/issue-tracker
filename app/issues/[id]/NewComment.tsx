@@ -11,10 +11,13 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import error from 'next/error'
 import { useForm } from 'react-hook-form'
 import { Comment } from '@prisma/client';
+import { useSession } from 'next-auth/react'
 
-type CommentFormData = z.infer<typeof commentSchema>
+type CommentFormData = { description: string }
 
 const NewComment = async ({ issueId }: { issueId: number }) => {
+
+    const { status, data: session } = useSession()
 
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -23,12 +26,8 @@ const NewComment = async ({ issueId }: { issueId: number }) => {
         resolver: zodResolver(commentSchema)
     })
 
-    const onSubmit = handleSubmit(async (data, event) => {
-
-        event?.preventDefault()
-        console.log('submitting')
+    const onSubmit = handleSubmit(async (data) => {
         try {
-
             const createdComment = {
                 ...data,
                 relatedIssue: issueId,
@@ -36,7 +35,7 @@ const NewComment = async ({ issueId }: { issueId: number }) => {
             }
 
             setLoading(true)
-            await axios.post(`/api/issues/${issueId}/comment`, { createdComment })
+            await axios.post(`/api/issues/${issueId}/comment`, { ...createdComment })
             // router.push(`/issues/${issueId}`)
             // router.refresh()
         } catch (error: any) {
@@ -45,8 +44,8 @@ const NewComment = async ({ issueId }: { issueId: number }) => {
             } else {
                 setError("An error has occurred")
             }
-            setLoading(false)
         }
+        setLoading(false)
     })
 
     return (
@@ -56,16 +55,17 @@ const NewComment = async ({ issueId }: { issueId: number }) => {
                     <TextField.Input placeholder='Add new comment'  {...register('description')} />
                 </TextField.Root>
                 {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
-                <Button disabled={loading} type="submit">
+                <Button disabled={loading}>
                     Add
                     {loading && <LoadingSpinner />}
-                </Button></Flex>
-            {error && (
+                </Button>
+            </Flex>
+            {/* {errors && (
                 <Callout.Root color="red">
                     <Callout.Text>
-                        {error}
+                        {errors.assignedToUserId?.message}
                     </Callout.Text>
-                </Callout.Root>)}
+                </Callout.Root>)} */}
         </form>
     )
 }

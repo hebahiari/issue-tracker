@@ -8,19 +8,19 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
 
     const session = await getServerSession(AuthOptions)
-
     if (!session) return NextResponse.json({}, { status: 401 })
 
+    const user = await prisma.user.findFirstOrThrow({ where: { email: session.user?.email } })
     const body = await request.json()
     //validate request
     const validation = commentSchema.safeParse(body)
 
     if (validation.success) {
-        const { assignedToUserId, type, description, relatedIssue } = body
+        const { type, description, relatedIssue } = body
 
         const newComment = await prisma.comment.create({
             data: {
-                assignedToUserId,
+                assignedToUserId: user.id,
                 description,
                 type,
                 relatedIssue: parseInt(relatedIssue)
