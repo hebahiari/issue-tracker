@@ -5,13 +5,16 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
+
+    await prisma.issue.deleteMany();
+    await prisma.user.deleteMany();
     // Insert users
     const usersData = [
-        { name: 'John Doe', email: 'john@example.com', image: 'https://example.com/john.jpg' },
-        { name: 'Jane Smith', email: 'jane@example.com', image: 'https://example.com/jane.jpg' },
-        { name: 'Alice Johnson', email: 'alice@example.com', image: 'https://example.com/alice.jpg' },
-        { name: 'Bob Brown', email: 'bob@example.com', image: 'https://example.com/bob.jpg' },
-        { name: 'Eva White', email: 'eva@example.com', image: 'https://example.com/eva.jpg' }
+        { name: 'John Doe', email: 'john@example.com', image: 'https://tinyurl.com/mu6r628y' },
+        { name: 'Jane Smith', email: 'jane@example.com', image: 'https://tinyurl.com/3322e8h7' },
+        { name: 'Alice Johnson', email: 'alice@example.com', image: 'https://tinyurl.com/4dmd4ata' },
+        { name: 'Bob Brown', email: 'bob@example.com', image: 'https://tinyurl.com/yyu2ewx9' },
+        { name: 'Eva White', email: 'eva@example.com', image: 'https://tinyurl.com/36tsejh5' }
     ];
 
     for (const userData of usersData) {
@@ -51,7 +54,6 @@ async function main() {
                 ...issueData,
                 createdAt: new Date(issueData.createdAt),
                 updatedAt: new Date(issueData.updatedAt),
-
             },
         });
     }

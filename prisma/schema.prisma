@@ -11,14 +11,15 @@ datasource db {
 }
 
 model Issue {
-  id               Int      @id @default(autoincrement())
-  title            String   @db.VarChar(255)
-  description      String   @db.Text
-  status           Status   @default(OPEN)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  assignedToUserId String?  @db.VarChar(225)
-  assignToUser     User?    @relation(fields: [assignedToUserId], references: [id])
+  id               Int       @id @default(autoincrement())
+  title            String    @db.VarChar(255)
+  description      String    @db.Text
+  status           Status    @default(OPEN)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  assignedToUserId String?   @db.VarChar(225)
+  assignToUser     User?     @relation(fields: [assignedToUserId], references: [id])
+  commentId        Comment[]
 }
 
 model Comment {
@@ -26,6 +27,8 @@ model Comment {
   description      String   @db.Text
   createdAt        DateTime @default(now())
   type             String   @db.Text
+  relatedIssue     Int
+  issueId          Issue    @relation(fields: [relatedIssue], references: [id])
   assignedToUserId String   @db.VarChar(225)
   assignToUser     User     @relation(fields: [assignedToUserId], references: [id])
 }
