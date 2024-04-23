@@ -3,7 +3,7 @@ import Link from 'next/link'
 import NewComment from './NewComment'
 import prisma from '@/prisma/client'
 
-const IssueComments = async () => {
+const IssueComments = async ({ issueId }: { issueId: number }) => {
 
     // fetch comments
     const comments = await prisma.comment.findMany({
@@ -15,7 +15,6 @@ const IssueComments = async () => {
         }
     })
 
-
     return (
         <Card>
             <Heading size='4' m='2'>Comments</Heading>
@@ -23,12 +22,12 @@ const IssueComments = async () => {
                 <Table.Body>
                     <Table.Row>
                         <Table.Cell>
-                            {/* <NewComment /> */}
+                            <NewComment issueId={issueId} />
                         </Table.Cell>
                     </Table.Row>
                     {comments.map((comment) => (
                         <Table.Row key={comment.id}>
-                            <Table.Cell>
+                            <Table.Cell >
                                 <Flex direction='column' gap='3'>
                                     <Flex gap='2'>
                                         <Avatar
