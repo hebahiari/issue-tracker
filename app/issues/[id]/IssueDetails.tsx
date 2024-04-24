@@ -2,13 +2,14 @@ import { StatusBadge } from '@/app/components'
 import { Issue } from '@prisma/client'
 import { Card, Flex, Heading, Text } from '@radix-ui/themes'
 import ReactMarkdown from 'react-markdown'
+import ChangeStatus from './ChangeStatus'
 
 const IssueDetails = ({ issue }: { issue: Issue }) => {
     return (
         <>
             <Heading>{issue.title}</Heading>
             <Flex gap="3">
-                <StatusBadge status={issue.status} />
+                <ChangeStatus status={issue.status} />
                 <Text>{issue.createdAt.toDateString()}</Text>
             </Flex>
             <Card>
