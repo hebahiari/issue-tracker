@@ -1,7 +1,7 @@
 'use client'
 
 import { ErrorMessage, LoadingSpinner } from '@/app/components'
-import { TextField, Button, Callout, Flex } from '@radix-ui/themes'
+import { TextField, Button, Callout, Flex, TextArea } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -50,12 +50,12 @@ const NewComment = ({ issueId }: { issueId: number }) => {
     })
 
     return (
-        <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
-            <Flex gap='3'>
-                <TextField.Root>
-                    <TextField.Input placeholder='Add new comment'  {...register('description')} />
-                </TextField.Root>
+        <form className='max-w-xl space-b-3' onSubmit={onSubmit}>
+            <Flex gap='3' align='end'>
                 {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
+                <TextArea
+                    placeholder='Add new comment'
+                    {...register('description')} />
                 <Button disabled={loading} type='submit'>
                     Add
                     {loading && <LoadingSpinner />}
