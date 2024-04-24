@@ -9,15 +9,15 @@ export async function PATCH(
     { params }: { params: { id: string } }) {
 
     // respond with not authorized if user is not logged in
-    const session = await getServerSession(AuthOptions)
-    if (!session) return NextResponse.json({}, { status: 401 })
+    // const session = await getServerSession(AuthOptions)
+    // if (!session) return NextResponse.json({}, { status: 401 })
 
     const body = await request.json()
     const validation = patchIssueSchema.safeParse(body)
 
     if (validation.success) {
 
-        const { assignedToUserId, title, description } = body
+        const { assignedToUserId, title, description, status } = body
 
         if (assignedToUserId) {
             const user = await prisma.user.findUnique({
@@ -40,7 +40,8 @@ export async function PATCH(
                 data: {
                     title,
                     description,
-                    assignedToUserId
+                    assignedToUserId,
+                    status
                 }
             })
 
