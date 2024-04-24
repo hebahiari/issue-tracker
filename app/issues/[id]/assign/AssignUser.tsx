@@ -20,7 +20,13 @@ const AssignUser = ({ issue }: { issue: Issue }) => {
             `/api/issues/${issue.id}`,
             { assignedToUserId: userId || null }
         )
-            .catch(() => { toast.error("Changes could not be saved.") })
+            .catch((error) => {
+                if (error.response?.status === 401) {
+                    toast.error("Changes were not saved, please log in to perform this action.")
+                } else {
+                    toast.error("Changes could not be saved.")
+                }
+            })
     }
 
     return (
