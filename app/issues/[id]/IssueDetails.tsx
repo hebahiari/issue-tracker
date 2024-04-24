@@ -9,7 +9,7 @@ const IssueDetails = ({ issue }: { issue: Issue }) => {
         <>
             <Heading>{issue.title}</Heading>
             <Flex gap="3">
-                <ChangeStatus status={issue.status} />
+                <ChangeStatus issue={issue} />
                 <Text>{issue.createdAt.toDateString()}</Text>
             </Flex>
             <Card>

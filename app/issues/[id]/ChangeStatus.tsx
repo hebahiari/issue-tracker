@@ -1,8 +1,10 @@
 'use client'
 
-import { Status } from '@prisma/client'
+import { Issue, Status } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
+import axios from 'axios'
 import React from 'react'
+import toast from 'react-hot-toast'
 
 const statusMap: Record<Status, { label: string, color: 'red' | 'blue' | 'green' }> = {
     OPEN: { label: 'Open', color: 'red' },
@@ -10,11 +12,16 @@ const statusMap: Record<Status, { label: string, color: 'red' | 'blue' | 'green'
     IN_PROGRESS: { label: 'In Progress', color: 'green' }
 }
 
-const ChangeStatus = ({ status }: { status: Status }) => {
+const ChangeStatus = ({ issue: { status, id } }: { issue: Issue }) => {
 
-    const changeIssueStatus = async () => {
-        console.log('hellp')
+    const changeIssueStatus = async (status: Status) => {
+        await axios.patch(
+            `/api/issues/${id}`,
+            { status: status }
+        )
+            .catch(() => { toast.error("Changes could not be saved.") })
     }
+
 
     return (
         <Select.Root
