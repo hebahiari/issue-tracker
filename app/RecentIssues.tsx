@@ -2,6 +2,7 @@ import prisma from "@/prisma/client"
 import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes"
 import { StatusBadge } from "./components"
 import Link from "next/link"
+import ToolTip from "./components/ToolTip"
 
 const RecentIssues = async () => {
     const recentIssues = await prisma.issue.findMany({
@@ -27,12 +28,13 @@ const RecentIssues = async () => {
                                         <StatusBadge status={issue.status} />
                                     </Flex>
                                     {issue.assignToUser && (
-                                        <Avatar
-                                            src={issue.assignToUser.image!}
-                                            fallback='?'
-                                            size='2'
-                                            radius='full'
-                                        />
+                                        // <Avatar
+                                        //     src={issue.assignToUser.image!}
+                                        //     fallback='?'
+                                        //     size='2'
+                                        //     radius='full'
+                                        // />
+                                        <ToolTip user={issue.assignToUser} />
                                     )}
                                 </Flex>
 
