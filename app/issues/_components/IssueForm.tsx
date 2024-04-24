@@ -51,7 +51,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
 
     return (
         <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
-            <BackButton />
+            <BackButton issue={issue} />
             <Heading weight="medium">{issue ? 'Edit Issue' : 'Create New Issue'}</Heading>
             <TextField.Root>
                 <TextField.Input defaultValue={issue?.title} placeholder='Title' {...register('title')} />
