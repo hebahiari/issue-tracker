@@ -15,9 +15,7 @@ import { useSession } from 'next-auth/react'
 
 type CommentFormData = { description: string }
 
-const NewComment = async ({ issueId }: { issueId: number }) => {
-
-    const { status, data: session } = useSession()
+const NewComment = ({ issueId }: { issueId: number }) => {
 
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -26,7 +24,10 @@ const NewComment = async ({ issueId }: { issueId: number }) => {
         resolver: zodResolver(commentSchema)
     })
 
-    const onSubmit = handleSubmit(async (data) => {
+
+
+    const onSubmit = handleSubmit(async (data, event) => {
+        event?.preventDefault()
         try {
             const createdComment = {
                 ...data,
@@ -55,7 +56,7 @@ const NewComment = async ({ issueId }: { issueId: number }) => {
                     <TextField.Input placeholder='Add new comment'  {...register('description')} />
                 </TextField.Root>
                 {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
-                <Button disabled={loading}>
+                <Button disabled={loading} type='submit'>
                     Add
                     {loading && <LoadingSpinner />}
                 </Button>
