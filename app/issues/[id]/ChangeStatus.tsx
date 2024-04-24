@@ -4,7 +4,7 @@ import { Issue, Status } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
 import axios from 'axios'
 import React from 'react'
-import toast from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 
 const statusMap: Record<Status, { label: string, color: 'red' | 'blue' | 'green' }> = {
     OPEN: { label: 'Open', color: 'red' },
@@ -19,32 +19,41 @@ const ChangeStatus = ({ issue: { status, id } }: { issue: Issue }) => {
             `/api/issues/${id}`,
             { status: status }
         )
-            .catch(() => { toast.error("Changes could not be saved.") })
+            .catch((error) => {
+                if (error.response?.status === 401) {
+                    toast.error("Changes were not saved, please log in to perform this action.")
+                } else {
+                    toast.error("Changes could not be saved.")
+                }
+            })
     }
 
 
     return (
-        <Select.Root
-            defaultValue={status}
-            onValueChange={changeIssueStatus}
-        >
-            <Select.Trigger />
-            <Select.Content>
-                <Select.Group>
-                    {
-                        <>
-                            {Object.entries(statusMap).map((status) => (
-                                <Select.Item
-                                    key={status[1].label}
-                                    value={status[0]}>
-                                    {status[1].label}
-                                </Select.Item>
-                            ))}
-                        </>
-                    }
-                </Select.Group>
-            </Select.Content>
-        </Select.Root>
+        <>
+            <Toaster />
+            <Select.Root
+                defaultValue={status}
+                onValueChange={changeIssueStatus}
+            >
+                <Select.Trigger />
+                <Select.Content>
+                    <Select.Group>
+                        {
+                            <>
+                                {Object.entries(statusMap).map((status) => (
+                                    <Select.Item
+                                        key={status[1].label}
+                                        value={status[0]}>
+                                        {status[1].label}
+                                    </Select.Item>
+                                ))}
+                            </>
+                        }
+                    </Select.Group>
+                </Select.Content>
+            </Select.Root>
+        </>
     )
 }
 
