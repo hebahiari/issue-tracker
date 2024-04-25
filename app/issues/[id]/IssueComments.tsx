@@ -12,7 +12,7 @@ const IssueComments = async ({ issueId }: { issueId: number }) => {
     // fetch comments
     const comments = await prisma.comment.findMany({
         where: {
-            relatedIssue: 21,
+            relatedIssue: issueId,
         }, include: {
             assignToUser: true
         },
@@ -32,7 +32,7 @@ const IssueComments = async ({ issueId }: { issueId: number }) => {
                             </Box>
                         </Table.Cell>
                     </Table.Row>
-                    {comments.map((comment) => (
+                    {comments && comments.map((comment) => (
                         <Table.Row key={comment.id}>
                             <Table.Cell >
                                 <Flex justify='between'>
@@ -55,6 +55,12 @@ const IssueComments = async ({ issueId }: { issueId: number }) => {
                             </Table.Cell>
                         </Table.Row>
                     ))}
+                    {comments.length == 0 && (
+                        <Table.Row>
+                            <Table.Cell>
+                                <Text color='gray'>No comments yet.</Text>
+                            </Table.Cell>
+                        </Table.Row>)}
                 </Table.Body>
             </Table.Root>
         </Card>)

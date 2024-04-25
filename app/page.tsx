@@ -1,20 +1,26 @@
 import prisma from "@/prisma/client";
-import Pagination from "./components/Pagination";
 import IssuesSummary from "./IssuesSummary";
 import RecentIssues from "./RecentIssues";
 import { Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import IssuesChart from "./IssuesChart";
 import { Metadata } from "next";
-import delay from "delay";
 
 export default async function Home() {
 
-  const open = await prisma.issue.count({ where: { status: 'OPEN' } })
-  const closed = await prisma.issue.count({ where: { status: 'CLOSED' } })
-  const inProgress = await prisma.issue.count({ where: { status: 'IN_PROGRESS' } })
-  const total = await prisma.issue.count()
+  let open = 0
+  let closed = 0
+  let inProgress = 0
+  let total = 0
 
-  await delay(2000)
+  try {
+    open = await prisma.issue.count({ where: { status: 'OPEN' } })
+    closed = await prisma.issue.count({ where: { status: 'CLOSED' } })
+    inProgress = await prisma.issue.count({ where: { status: 'IN_PROGRESS' } })
+    total = await prisma.issue.count()
+  } catch (error) {
+    console.log(error)
+  }
+
 
   return (
     <Grid columns={{ 'initial': '1', md: '2' }} gap='5'>
