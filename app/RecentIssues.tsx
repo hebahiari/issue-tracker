@@ -3,15 +3,25 @@ import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes"
 import { StatusBadge } from "./components"
 import Link from "next/link"
 import ToolTip from "./components/ToolTip"
+import { Issue, User } from "@prisma/client"
+
+type IssueWithAssignee = Issue & { assignToUser?: User | null }
 
 const RecentIssues = async () => {
-    const recentIssues = await prisma.issue.findMany({
-        orderBy: { createdAt: 'desc' },
-        take: 5,
-        include: {
-            assignToUser: true
-        }
-    })
+
+    let recentIssues: IssueWithAssignee[] = []
+
+    try {
+        recentIssues = await prisma.issue.findMany({
+            orderBy: { createdAt: 'desc' },
+            take: 5,
+            include: {
+                assignToUser: true
+            }
+        })
+    } catch (error) {
+
+    }
 
     return (
         <Card>
@@ -28,12 +38,6 @@ const RecentIssues = async () => {
                                         <StatusBadge status={issue.status} />
                                     </Flex>
                                     {issue.assignToUser && (
-                                        // <Avatar
-                                        //     src={issue.assignToUser.image!}
-                                        //     fallback='?'
-                                        //     size='2'
-                                        //     radius='full'
-                                        // />
                                         <ToolTip user={issue.assignToUser} />
                                     )}
                                 </Flex>
