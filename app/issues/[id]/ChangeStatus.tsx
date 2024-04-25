@@ -3,6 +3,7 @@
 import { Issue, Status } from '@prisma/client'
 import { Select } from '@radix-ui/themes'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -13,12 +14,13 @@ const statusMap: Record<Status, { label: string, color: 'red' | 'blue' | 'green'
 }
 
 const ChangeStatus = ({ issue: { status, id } }: { issue: Issue }) => {
-
+    const router = useRouter()
     const changeIssueStatus = async (status: Status) => {
         await axios.patch(
             `/api/issues/${id}`,
             { status: status }
         )
+            .then(() => router.refresh())
             .catch((error) => {
                 if (error.response?.status === 401) {
                     toast.error("Changes were not saved, please log in to perform this action.")

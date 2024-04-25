@@ -2,11 +2,17 @@
 
 import { useRouter } from 'next/navigation'
 import { LoadingSpinner } from '../components'
+import { useEffect } from 'react'
 
 const IssuesPage = () => {
 
     const router = useRouter()
-    router.push('/issues/list')
+
+
+    useEffect(() => {
+        router.push('/issues/list')
+    }, [])
+
 
     return <LoadingSpinner />
 }

@@ -4,7 +4,7 @@ import { ErrorMessage, LoadingSpinner } from '@/app/components'
 import { TextField, Button, Callout, Flex, TextArea } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { commentSchema } from '@/app/validationSchemas'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,13 +20,14 @@ const NewComment = ({ issueId }: { issueId: number }) => {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const { register, control, handleSubmit, formState: { errors } } = useForm<CommentFormData>({
+    const { register, control, handleSubmit, reset, formState: { errors } } = useForm<CommentFormData>({
         resolver: zodResolver(commentSchema)
     })
 
-
+    const router = useRouter()
 
     const onSubmit = handleSubmit(async (data, event) => {
+
         event?.preventDefault()
         try {
             const createdComment = {
@@ -37,8 +38,8 @@ const NewComment = ({ issueId }: { issueId: number }) => {
 
             setLoading(true)
             await axios.post(`/api/issues/${issueId}/comment`, { ...createdComment })
-            // router.push(`/issues/${issueId}`)
-            // router.refresh()
+            reset()
+            router.refresh()
         } catch (error: any) {
             if (error?.response?.status === 401) {
                 setError("Please log in to perform this action")
