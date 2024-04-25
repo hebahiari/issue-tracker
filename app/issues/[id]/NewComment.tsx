@@ -55,7 +55,8 @@ const NewComment = ({ issueId }: { issueId: number }) => {
                 {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
                 <TextArea
                     placeholder='Add new comment'
-                    {...register('description')} />
+                    {...register('description')}
+                    style={{ maxWidth: '500px' }} />
                 <Button disabled={loading} type='submit'>
                     Add
                     {loading && <LoadingSpinner />}
