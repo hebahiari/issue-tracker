@@ -1,27 +1,29 @@
-// seed.js
+//seed.js
+
 
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
 async function main() {
-
+    await prisma.comment.deleteMany();
     await prisma.issue.deleteMany();
     await prisma.user.deleteMany();
+
     // Insert users
     const usersData = [
         { name: 'John Doe', email: 'john@example.com', image: 'https://tinyurl.com/mu6r628y' },
-        { name: 'Jane Smith', email: 'jane@example.com', image: 'https://tinyurl.com/3322e8h7' },
+        { name: 'Jane Smith', email: 'jane@example.com', image: 'https://tinyurl.com/8mrhe2eu' },
         { name: 'Alice Johnson', email: 'alice@example.com', image: 'https://tinyurl.com/4dmd4ata' },
         { name: 'Bob Brown', email: 'bob@example.com', image: 'https://tinyurl.com/yyu2ewx9' },
         { name: 'Eva White', email: 'eva@example.com', image: 'https://tinyurl.com/36tsejh5' }
     ];
 
-    for (const userData of usersData) {
-        await prisma.user.create({
-            data: userData,
-        });
-    }
+    const users = await Promise.all(
+        usersData.map(userData =>
+            prisma.user.create({ data: userData })
+        )
+    );
 
     // Insert issues
     const issuesData = [
@@ -47,18 +49,88 @@ async function main() {
         { title: 'User Profile Update Error', description: 'Users are encountering errors when trying to update their profile information. Backend developers should investigate and resolve this issue to ensure smooth user interactions.', status: 'IN_PROGRESS', createdAt: '2024-03-29T12:40:00', updatedAt: '2024-03-31T10:25:00' }
     ];
 
+    const issues = await Promise.all(
+        issuesData.map(issueData =>
+            prisma.issue.create({
+                data:
+                {
+                    ...issueData,
+                    createdAt: new Date(issueData.createdAt),
+                    updatedAt: new Date(issueData.updatedAt),
+                }
+            })
+        )
+    );
 
-    for (const issueData of issuesData) {
-        await prisma.issue.create({
-            data: {
-                ...issueData,
-                createdAt: new Date(issueData.createdAt),
-                updatedAt: new Date(issueData.updatedAt),
-            },
-        });
-    }
+    // Sample comments
+    const commentsData = [
+        { description: "Unable to log in even after multiple attempts. Keep getting 'Invalid credentials' error.", type: 'user comment' },
+        { description: "Experiencing slow loading times when accessing certain pages. Is there a server issue?", type: 'user comment' },
+        { description: "Images not loading properly on the product listing page. Customers are unable to view product details.", type: 'user comment' },
+        { description: "Received a '404 - Page Not Found' error when trying to complete checkout. Is the link broken?", type: 'user comment' },
+        { description: "Encountered a 'Connection timed out' error while trying to submit a support ticket. Is the system down?", type: 'user comment' },
+        { description: "Transaction history not updating with recent purchases. Missing records for the past week.", type: 'user comment' },
+        { description: "Tried to upload a file, but it failed with a 'File too large' error. Is there a size limit?", type: 'user comment' },
+        { description: "Email verification link expired before I could confirm my account. Can I request a new link?", type: 'user comment' },
+        { description: "Dashboard not displaying updated data. Charts and graphs are showing outdated information.", type: 'user comment' },
+        { description: "Selected payment method not appearing during checkout. Unable to proceed with the purchase.", type: 'user comment' },
+        { description: "Search function returning irrelevant results. Is the algorithm working as expected?", type: 'user comment' },
+        { description: "Dropdown menu on the homepage not functioning on mobile devices. Is it a compatibility issue?", type: 'user comment' },
+        { description: "Product prices on the website don't match those advertised. Is there a pricing discrepancy?", type: 'user comment' },
+        { description: "Encountered a '503 - Service Unavailable' error while trying to access the support portal.", type: 'user comment' },
+        { description: "Unable to update profile picture. Save button seems unresponsive.", type: 'user comment' },
+        { description: "Forgot password link not working. Can't reset password to regain access to account.", type: 'user comment' },
+        { description: "Transaction failed during checkout, but payment was still deducted from my account.", type: 'user comment' },
+        { description: "Received a 'Security warning' when accessing the website. Is there a security breach?", type: 'user comment' },
+        { description: "Confirmation email for order placed not received. Concerned about order status.", type: 'user comment' },
+        { description: "Form submission failed with a 'Validation error'. Please review input fields for errors.", type: 'user comment' }
+    ];
+
+    const comments = await Promise.all(
+        commentsData.map(async commentData => {
+            const randomUser = users[Math.floor(Math.random() * users.length)];
+            const createdAt = randomDate(new Date(2024, 3, 1), new Date());
+            const randomIssue = issues[Math.floor(Math.random() * issues.length)];
+            return prisma.comment.create({
+                data: {
+                    ...commentData,
+                    assignToUser: {
+                        connect: { id: randomUser.id }
+                    },
+                    issueId: {
+                        connect: { id: randomIssue.id }
+                    },
+                    createdAt,
+                }
+            });
+        })
+    );
+
+    // Get all users
+    const allUsers = await prisma.user.findMany();
+
+    // Assign users to issues
+    const updatedIssues = await Promise.all(
+        issues.map(async issue => {
+            if (issue.status === 'IN_PROGRESS' || issue.status === 'CLOSED') {
+                const randomUser = allUsers[Math.floor(Math.random() * allUsers.length)];
+                return prisma.issue.update({
+                    where: { id: issue.id },
+                    data: {
+                        assignToUser: {
+                            connect: { id: randomUser.id }
+                        }
+                    }
+                });
+            }
+        }))
+
 
     console.log('Seed data inserted successfully!');
+}
+
+function randomDate(start, end) {
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
 
 main()
