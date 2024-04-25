@@ -35,7 +35,6 @@ const NewComment = ({ issueId }: { issueId: number }) => {
                 relatedIssue: issueId,
                 type: 'user comment'
             }
-
             setLoading(true)
             await axios.post(`/api/issues/${issueId}/comment`, { ...createdComment })
             reset()
@@ -52,7 +51,7 @@ const NewComment = ({ issueId }: { issueId: number }) => {
 
     return (
         <form className='max-w-xl space-b-3' onSubmit={onSubmit}>
-            <Flex gap='3' align='end'>
+            <Flex gap='3' align='end' wrap='wrap'>
                 {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
                 <TextArea
                     placeholder='Add new comment'
