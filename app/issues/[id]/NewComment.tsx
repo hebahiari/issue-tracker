@@ -1,17 +1,14 @@
 'use client'
 
 import { ErrorMessage, LoadingSpinner } from '@/app/components'
-import { TextField, Button, Callout, Flex, TextArea } from '@radix-ui/themes'
+import { Button, Flex, TextArea } from '@radix-ui/themes'
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { commentSchema } from '@/app/validationSchemas'
-import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import error from 'next/error'
 import { useForm } from 'react-hook-form'
-import { Comment } from '@prisma/client';
-import { useSession } from 'next-auth/react'
+import toast, { Toaster } from 'react-hot-toast'
 
 type CommentFormData = { description: string }
 
@@ -40,35 +37,32 @@ const NewComment = ({ issueId }: { issueId: number }) => {
             reset()
             router.refresh()
         } catch (error: any) {
-            if (error?.response?.status === 401) {
-                setError("Please log in to perform this action")
+            if (error.response?.status === 401) {
+                toast.error("Changes were not saved, please log in to perform this action.")
             } else {
-                setError("An error has occurred")
+                toast.error("Changes could not be saved.")
             }
         }
         setLoading(false)
     })
 
     return (
-        <form className='max-w-xl space-b-3' onSubmit={onSubmit}>
-            <Flex gap='3' align='end' wrap='wrap'>
-                {/* <ErrorMessage>{errors.description?.message}</ErrorMessage> */}
-                <TextArea
-                    placeholder='Add new comment'
-                    {...register('description')}
-                    style={{ maxWidth: '500px' }} />
-                <Button disabled={loading} type='submit'>
-                    Add
-                    {loading && <LoadingSpinner />}
-                </Button>
-            </Flex>
-            {/* {errors && (
-                <Callout.Root color="red">
-                    <Callout.Text>
-                        {errors.assignedToUserId?.message}
-                    </Callout.Text>
-                </Callout.Root>)} */}
-        </form>
+        <>
+            <Toaster />
+            <form className='max-w-xl space-b-3' onSubmit={onSubmit}>
+                <Flex gap='3' align='end' wrap='wrap'>
+                    <TextArea
+                        placeholder='Add new comment'
+                        {...register('description')}
+                        style={{ maxWidth: '480px' }} />
+                    <Button disabled={loading} type='submit'>
+                        Add
+                        {loading && <LoadingSpinner />}
+                    </Button>
+                    <ErrorMessage>{errors.description?.message}</ErrorMessage>
+                </Flex>
+            </form>
+        </>
     )
 }
 

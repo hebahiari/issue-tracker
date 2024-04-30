@@ -14,6 +14,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import SimpleMDE from 'react-simplemde-editor'
 import BackButton from './BackButton';
+import toast, { Toaster } from 'react-hot-toast'
+
 
 type IssueFormData = z.infer<typeof issueSchema>
 
@@ -26,7 +28,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
 
-    const onSubmit = handleSubmit(async (data) => {
+    const onSubmit = handleSubmit(async (data, event) => {
+        event?.preventDefault()
         try {
             setLoading(true)
             if (issue) {
@@ -40,43 +43,40 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
                 router.refresh()
             }
         } catch (error: any) {
-            if (error?.response?.status === 401) {
-                setError("Please log in to perform this action")
+            if (error.response?.status === 401) {
+                toast.error("Changes were not saved, please log in to perform this action.")
             } else {
-                setError("An error has occurred")
+                toast.error("Changes could not be saved.")
             }
             setLoading(false)
         }
     })
 
     return (
-        <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
-            <BackButton issue={issue} />
-            <Heading weight="medium">{issue ? 'Edit Issue' : 'Create New Issue'}</Heading>
-            <TextField.Root>
-                <TextField.Input defaultValue={issue?.title} placeholder='Title' {...register('title')} />
-            </TextField.Root>
-            <ErrorMessage>{errors.title?.message}</ErrorMessage>
-            <Controller
-                name="description"
-                control={control}
-                defaultValue={issue?.description}
-                render={({ field }) =>
-                    <SimpleMDE placeholder='Description' {...field} />
-                }>
-            </Controller>
-            <ErrorMessage>{errors.description?.message}</ErrorMessage>
-            <Button disabled={loading}>
-                {issue ? 'Update Issue' : 'Submit New Issue'}
-                {loading && <LoadingSpinner />}
-            </Button>
-            {error && (
-                <Callout.Root color="red">
-                    <Callout.Text>
-                        {error}
-                    </Callout.Text>
-                </Callout.Root>)}
-        </form>
+        <>
+            <Toaster />
+            <form className='max-w-xl space-y-3' onSubmit={onSubmit}>
+                <BackButton issue={issue} />
+                <Heading weight="medium">{issue ? 'Edit Issue' : 'Create New Issue'}</Heading>
+                <TextField.Root>
+                    <TextField.Input defaultValue={issue?.title} placeholder='Title' {...register('title')} />
+                </TextField.Root>
+                <ErrorMessage>{errors.title?.message}</ErrorMessage>
+                <Controller
+                    name="description"
+                    control={control}
+                    defaultValue={issue?.description}
+                    render={({ field }) =>
+                        <SimpleMDE placeholder='Description' {...field} />
+                    }>
+                </Controller>
+                <ErrorMessage>{errors.description?.message}</ErrorMessage>
+                <Button disabled={loading}>
+                    {issue ? 'Update Issue' : 'Submit New Issue'}
+                    {loading && <LoadingSpinner />}
+                </Button>
+            </form>
+        </>
     )
 }
 
