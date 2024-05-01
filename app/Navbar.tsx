@@ -5,8 +5,9 @@ import { usePathname } from 'next/navigation'
 import { GrBug } from "react-icons/gr"
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
-import { Avatar, Box, Container, DropdownMenu, Flex, Text } from '@radix-ui/themes'
+import { Avatar, Box, Button, Container, DropdownMenu, Flex, Text } from '@radix-ui/themes'
 import { Skeleton } from '@/app/components'
+import { signIn, signOut } from "next-auth/react"
 
 
 const Navbar = () => {
@@ -69,8 +70,8 @@ const AuthStatus = () => {
                         {session.user!.email}
                     </Text>
                 </DropdownMenu.Label>
-                <DropdownMenu.Item>
-                    <Link href='/api/auth/signout' style={{ 'width': "100%" }}>Log out</Link>
+                <DropdownMenu.Item onClick={() => signOut()}>
+                    Logout
                 </DropdownMenu.Item>
             </DropdownMenu.Content>
         </DropdownMenu.Root>)
@@ -78,9 +79,7 @@ const AuthStatus = () => {
 
     if (status === "unauthenticated") {
         return (
-            <Link
-                className='nav-link'
-                href='/api/auth/signin'>Log in</Link>
+            <Button onClick={() => signIn("google")}>Log In</Button>
         )
     }
 }
