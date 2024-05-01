@@ -34,6 +34,7 @@ const NewComment = ({ issueId }: { issueId: number }) => {
             }
             setLoading(true)
             await axios.post(`/api/issues/${issueId}/comment`, { ...createdComment })
+            toast.success("Comment added!")
             reset()
             router.refresh()
         } catch (error: any) {
@@ -48,7 +49,6 @@ const NewComment = ({ issueId }: { issueId: number }) => {
 
     return (
         <>
-            <Toaster />
             <form className='max-w-xl space-b-3' onSubmit={onSubmit}>
                 <Flex gap='3' align='end' wrap='wrap'>
                     <TextArea

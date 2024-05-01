@@ -20,6 +20,7 @@ const ChangeStatus = ({ issue: { status, id } }: { issue: Issue }) => {
             `/api/issues/${id}`,
             { status: status }
         )
+            .then(() => toast.success("Status updated!"))
             .then(() => router.refresh())
             .catch((error) => {
                 if (error.response?.status === 401) {
