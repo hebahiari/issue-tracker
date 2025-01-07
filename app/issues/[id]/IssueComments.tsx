@@ -1,11 +1,7 @@
 import { Card, Heading, Table, Flex, Avatar, Text, Box } from '@radix-ui/themes'
-import Link from 'next/link'
 import NewComment from './NewComment'
 import prisma from '@/prisma/client'
-import { useSession } from 'next-auth/react'
-import { format, render, cancel, register } from 'timeago.js';
-
-
+import { format } from 'timeago.js';
 
 const IssueComments = async ({ issueId }: { issueId: number }) => {
 
@@ -18,7 +14,6 @@ const IssueComments = async ({ issueId }: { issueId: number }) => {
         },
         orderBy: { createdAt: 'desc' },
     })
-
 
     return (
         <Card>
